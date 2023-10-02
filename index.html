@@ -2,26 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Introduction Page - Viral Shah</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your One Page Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+
+        .carousel img {
+            width: 100%;
+            height: auto;
+        }
+
+        .about, .team, .contact {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .team .member {
+            display: inline-block;
+            margin: 20px;
+        }
+
+        .footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
+    <div class="carousel">
+        <img src="./images/1.jpeg" alt="Image 1">
+        <img src="./images/2.jpeg" alt="Image 2">
+        <img src="./images/3.jpeg" alt="Image 3">
+        <img src="./images/4.jpeg" alt="Image 4">
+        <img src="./images/1.jpeg" alt="Image 5">
+    </div>
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6 mx-auto text-center">
-                <h1 class="mb-4">Viral Shah</h1>
-                <p class="lead">Welcome to my introduction page</p>
-                <p>I am passionate about Programming. I have experience in Programming.</p>
-                <p>Feel free to explore more about me!</p>
-				<p>Feel free to explore more about CI/CD pipeline</p>
-            </div>
+    <div class="about">
+        <h2>About Us</h2>
+        <p>Write a brief about your company here.</p>
+    </div>
+
+    <div class="team">
+        <h2>Our Team</h2>
+        <div class="member">
+            <img src="https://path-to-team-member1.jpg" alt="Team Member 1">
+            <h3>John Doe</h3>
+            <p>Position</p>
+        </div>
+        <div class="member">
+            <img src="https://path-to-team-member2.jpg" alt="Team Member 2">
+            <h3>Jane Doe</h3>
+            <p>Position</p>
+        </div>
+        <div class="member">
+            <img src="https://path-to-team-member3.jpg" alt="Team Member 3">
+            <h3>James Doe</h3>
+            <p>Position</p>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div class="contact">
+        <h2>Contact Us</h2>
+        <p>Provide contact information here.</p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2023 Your Company. All Rights Reserved.</p>
+    </div>
 </body>
 </html>

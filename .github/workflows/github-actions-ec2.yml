@@ -1,5 +1,6 @@
-name: Deploy to FTP
+name: Push-to-EC2
 
+# Trigger deployment only on push to main branch
 on:
   push:
     branches:
@@ -7,22 +8,32 @@ on:
 
 jobs:
   deploy:
+    name: Deploy to EC2 on master branch push
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout the files
         uses: actions/checkout@v2
 
-      - name: Install lftp and OpenSSH client
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y lftp openssh-client
+      - name: Deploy to Server 1
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.HOST_DNS }}
+          REMOTE_USER: ${{ secrets.USERNAME }}
+          TARGET: ${{ secrets.TARGET_DIR }}
 
-      - name: Set up SSH key
-        run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" > ec2_ssh_key
-          chmod 600 ec2_ssh_key
+      - name: Executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_DNS }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo apt-get -y update
+            sudo apt-get install -y apache2
+            sudo systemctl start apache2
+            sudo systemctl enable apache2
+            cd home
+            sudo mv * /var/www/html
 
-      - name: Deploy to FTP
-        run: |
-          lftp -e "set sftp:auto-confirm yes; mirror -R --ignore-time --parallel=10 --exclude-glob .git* --exclude .git/ -X .gitignore ./ /var/www/html; exit" -u ubuntu -p 22 sftp://ec2-44-204-61-43.compute-1.amazonaws.com

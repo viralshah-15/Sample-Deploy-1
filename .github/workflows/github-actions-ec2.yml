@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: Deploy to FTP
 
 on:
   push:
@@ -7,17 +7,22 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Set up SSH key
-        uses: webfactory/ssh-agent@v0.5.0
-        with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
-
-      - name: Deploy to EC2
+      - name: Install lftp and OpenSSH client
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_KEY }} ubuntu@44.204.61.43 "cd /var/www/html && git pull origin main"
+          sudo apt-get update
+          sudo apt-get install -y lftp openssh-client
+
+      - name: Set up SSH key
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > ec2_ssh_key
+          chmod 600 ec2_ssh_key
+
+      - name: Deploy to FTP
+        run: |
+          lftp -e "set sftp:auto-confirm yes; mirror -R --ignore-time --parallel=10 --exclude-glob .git* --exclude .git/ -X .gitignore ./ /var/www/html; exit" -u ubuntu -p 22 sftp://ec2-44-204-61-43.compute-1.amazonaws.com
